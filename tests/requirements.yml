@@ -1,0 +1,8 @@
+---
+- name: install-docker
+  src: https://github.com/borisskert/ansible-docker.git
+  scm: git
+
+- name: install-timemachine
+  src: https://github.com/borisskert/ansible-timemachine.git
+  scm: git

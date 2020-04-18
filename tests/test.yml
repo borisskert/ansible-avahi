@@ -1,0 +1,30 @@
+---
+- hosts: test_machine
+  become: yes
+
+  roles:
+    - role: install-docker
+      storage_driver: overlay2
+      cleanup_enabled: no
+      install_pip_docker: yes
+
+    - role: install-timemachine
+      interface: 0.0.0.0
+      netatalk_port: 548
+      storage_volume: /srv/docker/timemachine/storage
+      config_volume: /srv/docker/timemachine/config
+      data_volume: /srv/docker/timemachine/data
+      lock_volume: /srv/docker/timemachine/lock
+      log_level: debug
+
+    - role: ansible-avahi
+      published_services:
+        - name: timemachine
+          services:
+            # https://github.com/lathiat/avahi/blob/master/service-type-database/service-types
+            - type: _afpovertcp._tcp
+              port: 548
+            - type: _device-info._tcp
+              port: 0
+              txt_records:
+                - model=TimeCapsule

@@ -1,0 +1,44 @@
+---
+- name: Estimate intended service paths
+  set_fact:
+    intended_service_paths: >
+      {{
+      published_services
+      | selectattr('name', 'defined')
+      | map(attribute='name')
+      | map('regex_replace', '^(.*)$', '/etc/avahi/services/\1.service')
+      | list
+      }}
+
+- name: Search for existing service files
+  find:
+    paths: /etc/avahi/services
+  register: existing_service_files
+
+- name: Extract existing service file paths
+  set_fact:
+    existing_services_paths: >
+      {{
+      existing_service_files.files
+      | selectattr('path', 'defined')
+      | map(attribute='path')
+      | list
+      }}
+
+- name: Extract service file paths to be removed
+  set_fact:
+    service_paths_to_be_removed: >
+      {{
+      existing_service_files.files
+      | selectattr('path', 'defined')
+      | map(attribute='path')
+      | reject('in', intended_service_paths)
+      | list
+      }}
+
+- name: Remove not published services
+  file:
+    path: "{{item}}"
+    state: absent
+  with_items: "{{service_paths_to_be_removed}}"
+  register: not_publish_avahi_services

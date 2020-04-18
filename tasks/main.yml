@@ -1,0 +1,26 @@
+---
+- name: Install avahi package
+  apt:
+    name: avahi-daemon
+    state: present
+    update_cache: yes
+
+- include: delete-not-published-services.yml
+
+- name: Setup avahi services
+  template:
+    src: avahi-service.j2
+    dest: "/etc/avahi/services/{{item.name}}.service"
+    owner: root
+    group: root
+    mode: '0644'
+  with_items: "{{published_services}}"
+  register: publish_avahi_services
+
+- name: Reload avahi deamon
+  service:
+    name: avahi-daemon
+    state: reloaded
+  when: >
+    publish_avahi_services.changed or
+    not_publish_avahi_services.changed
