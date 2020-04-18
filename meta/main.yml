@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  role_name: install-avahi
+  author: borisskert
+  description: Installation role for avahi daemon
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+  categories:
+    - development
+    - packaging
+    - system
+dependencies: []
