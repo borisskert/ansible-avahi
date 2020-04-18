@@ -21,6 +21,12 @@
   service:
     name: avahi-daemon
     state: reloaded
+    enabled: yes
   when: >
     publish_avahi_services.changed or
     not_publish_avahi_services.changed
+
+- name: Start avahi deamon (if not started already)
+  service:
+    name: avahi-daemon
+    state: started

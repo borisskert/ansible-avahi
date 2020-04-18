@@ -21,7 +21,6 @@
       published_services:
         - name: timemachine
           services:
-            # https://github.com/lathiat/avahi/blob/master/service-type-database/service-types
             - type: _afpovertcp._tcp
               port: 548
             - type: _device-info._tcp
