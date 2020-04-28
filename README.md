@@ -4,7 +4,9 @@ Installs an avahi daemon on an ubuntu server.
 
 ## Tested operating systems
 
+* Ubuntu 16.04 (xenial)
 * Ubuntu 18.04 (bionic)
+* Ubuntu 20.04 (focal)
 
 ## System requirements
 
@@ -27,7 +29,8 @@ Installs an avahi daemon on an ubuntu server.
 
 | Property      | Type             | Mandatory? | Description           |
 |---------------|------------------|------------|-----------------------|
-| name          | text             | yes        | The name of the service. Needed for the service file name  |
+| name          | text             | yes        | The published name of the service |
+| file          | text             | yes        | The filename of the service in your config |
 | services      | array of service | yes        | The avahi services defined in service xml file |
 
 ### Definition service
@@ -65,6 +68,7 @@ Typical playbook:
     - role: install-avahi
       published_services:
         - name: timemachine
+          file: afpd
           services:
             - type: _afpovertcp._tcp
               port: 548

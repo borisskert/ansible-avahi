@@ -6,3 +6,7 @@
 - name: install-timemachine
   src: https://github.com/borisskert/ansible-timemachine.git
   scm: git
+
+- name: install-samba
+  src: https://github.com/borisskert/ansible-samba.git
+  scm: git

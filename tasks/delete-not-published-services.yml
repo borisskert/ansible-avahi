@@ -5,7 +5,7 @@
       {{
       published_services
       | selectattr('name', 'defined')
-      | map(attribute='name')
+      | map(attribute='file')
       | map('regex_replace', '^(.*)$', '/etc/avahi/services/\1.service')
       | list
       }}

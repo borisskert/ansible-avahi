@@ -11,15 +11,25 @@
     - role: install-timemachine
       interface: 0.0.0.0
       netatalk_port: 548
-      storage_volume: /srv/docker/timemachine/storage
-      config_volume: /srv/docker/timemachine/config
-      data_volume: /srv/docker/timemachine/data
-      lock_volume: /srv/docker/timemachine/lock
+      storage_volume: /srv/timemachine/storage
+      config_volume: /srv/timemachine/config
+      data_volume: /srv/timemachine/data
+      lock_volume: /srv/timemachine/lock
       log_level: debug
+
+    - role: ansible-samba
+      samba_port: 445
+      interface: 0.0.0.0
+      volumes_path: /srv/samba
+      log_level: 2
+      enable_homes: yes
+      enable_netbios: yes
+      netbios_name: mysamba
 
     - role: ansible-avahi
       published_services:
-        - name: timemachine
+        - file: timemachine
+          name: '%h'
           services:
             - type: _afpovertcp._tcp
               port: 548
@@ -27,3 +37,13 @@
               port: 0
               txt_records:
                 - model=TimeCapsule
+            - type: _device-info._tcp
+              port: 0
+              txt_records:
+                - model=RackMac
+        - file: samba
+          name: samba on %h
+          services:
+            - type: _smb._tcp
+              port: 445
+

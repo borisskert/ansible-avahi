@@ -10,7 +10,7 @@
 - name: Setup avahi services
   template:
     src: avahi-service.j2
-    dest: "/etc/avahi/services/{{item.name}}.service"
+    dest: "/etc/avahi/services/{{item.file}}.service"
     owner: root
     group: root
     mode: '0644'
