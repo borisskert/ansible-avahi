@@ -3,30 +3,28 @@
   apt:
     name: avahi-daemon
     state: present
-    update_cache: yes
+    update_cache: true
 
 - include: delete-not-published-services.yml
 
 - name: Setup avahi services
   template:
     src: avahi-service.j2
-    dest: "/etc/avahi/services/{{item.file}}.service"
+    dest: "/etc/avahi/services/{{ item.file }}.service"
     owner: root
     group: root
     mode: '0644'
-  with_items: "{{published_services}}"
-  register: publish_avahi_services
+  with_items: "{{ published_services }}"
+  notify: Reload avahi daemon
 
-- name: Reload avahi deamon
+- name: Enable avahi deamon
   service:
     name: avahi-daemon
-    state: reloaded
-    enabled: yes
-  when: >
-    publish_avahi_services.changed or
-    not_publish_avahi_services.changed
+    enabled: true
+  register: avahi_daemon_service
+  changed_when: avahi_daemon_service.changed
+    or avahi_daemon_service.status.SubState != 'running'
+  notify: Start avahi daemon
 
-- name: Start avahi deamon (if not started already)
-  service:
-    name: avahi-daemon
-    state: started
+- name: Start systemd-managed service
+  meta: flush_handlers

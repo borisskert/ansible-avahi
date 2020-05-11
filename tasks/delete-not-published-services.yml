@@ -38,7 +38,7 @@
 
 - name: Remove not published services
   file:
-    path: "{{item}}"
+    path: "{{ item }}"
     state: absent
-  with_items: "{{service_paths_to_be_removed}}"
-  register: not_publish_avahi_services
+  with_items: "{{ service_paths_to_be_removed }}"
+  notify: Reload avahi daemon

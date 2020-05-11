@@ -1,0 +1,15 @@
+---
+- name: Start avahi daemon
+  service:
+    name: avahi-daemon
+    state: started
+  register: avahi_daemon_start
+
+- name: Reload avahi daemon
+  service:
+    name: avahi-daemon
+    state: reloaded
+  when: not (
+    avahi_daemon_start is defined
+    and avahi_daemon_start.changed
+    )

@@ -10,7 +10,8 @@ galaxy_info:
       versions:
         - xenial
         - bionic
-  categories:
+        - focal
+  galaxy_tags:
     - development
     - packaging
     - system
