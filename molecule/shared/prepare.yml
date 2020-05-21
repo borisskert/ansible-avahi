@@ -1,0 +1,30 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Should timemachine service file
+      stat:
+        path: /etc/avahi/services/timemachine.service
+        checksum_algorithm: sha256
+      register: timemachine_service_file
+
+    - name: Create dummy service file to be removed by role
+      copy:
+        dest: /etc/avahi/services/another.service
+        content: |
+          <?xml version="1.0" standalone='no'?>
+          <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+          <service-group>
+              <name replace-wildcards="yes">another service on %h</name>
+              <service>
+                  <type>_afpovertcp._tcp</type>
+                  <port>7777</port>
+              </service>
+              <service>
+                  <type>_device-info._tcp</type>
+                  <port>0</port>
+                  <txt-record>model=RackMac</txt-record>
+              </service>
+          </service-group>

@@ -25,6 +25,10 @@
   changed_when: avahi_daemon_service.changed
     or avahi_daemon_service.status.SubState != 'running'
   notify: Start avahi daemon
+  when: not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )
 
 - name: Start systemd-managed service
   meta: flush_handlers

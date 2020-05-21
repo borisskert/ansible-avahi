@@ -1,0 +1,58 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Should timemachine service file
+      stat:
+        path: /etc/avahi/services/timemachine.service
+        checksum_algorithm: sha256
+      register: timemachine_service_file
+      # Expecting file to have content:
+      #  <?xml version="1.0" standalone='no'?>
+      #  <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+      #  <service-group>
+      #      <name replace-wildcards="yes">%h</name>
+      #      <service>
+      #          <type>_afpovertcp._tcp</type>
+      #          <port>548</port>
+      #      </service>
+      #      <service>
+      #          <type>_device-info._tcp</type>
+      #          <port>0</port>
+      #          <txt-record>model=TimeCapsule</txt-record>
+      #      </service>
+      #  </service-group>
+      failed_when: not (
+        timemachine_service_file.stat.exists
+        and timemachine_service_file.stat.checksum
+        == '514b8a73876da8742cb25abef8b233fbe886b2f65b35b74365e2864bcd6e17e6'
+        )
+
+    - name: Should samba service file
+      stat:
+        path: /etc/avahi/services/samba.service
+        checksum_algorithm: sha256
+      register: samba_service_file
+      # Expecting file to have content:
+      #  <?xml version="1.0" standalone='no'?>
+      #  <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+      #  <service-group>
+      #      <name replace-wildcards="yes">samba on %h</name>
+      #      <service>
+      #          <type>_smb._tcp</type>
+      #          <port>445</port>
+      #      </service>
+      #  </service-group>
+      failed_when: not (
+        samba_service_file.stat.exists
+        and samba_service_file.stat.checksum
+        == 'a311b68f6217578573140c156ce11c51b03ffbdc9899252065bc3f709c841ab0'
+        )
+
+    - name: Should remove another service file
+      stat:
+        path: /etc/avahi/services/another.service
+      register: another_service_file
+      failed_when: another_service_file.stat.exists

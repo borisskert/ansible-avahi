@@ -77,3 +77,34 @@ Typical playbook:
               txt_records:
                 - model=TimeCapsule
 ```
+
+## Testing
+
+Requirements:
+
+* [Vagrant](https://www.vagrantup.com/)
+* [VirtualBox](https://www.virtualbox.org/)
+* [Ansible](https://docs.ansible.com/)
+* [Molecule](https://molecule.readthedocs.io/en/latest/index.html)
+* [yamllint](https://yamllint.readthedocs.io/en/stable/#)
+* [ansible-lint](https://docs.ansible.com/ansible-lint/)
+* [Docker](https://docs.docker.com/)
+
+### Run within docker
+
+```shell script
+molecule test
+```
+
+### Run within Vagrant
+
+```shell script
+ molecule test --scenario-name vagrant --parallel
+```
+
+I recommend to use [pyenv](https://github.com/pyenv/pyenv) for local testing.
+Within the Github Actions pipeline I use [my own molecule Docker image](https://github.com/borisskert/docker-molecule).
+
+## Links
+
+* [teamspeak @ Docker Hub](https://hub.docker.com/_/teamspeak/)
