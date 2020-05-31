@@ -23,7 +23,7 @@ Installs an avahi daemon on an ubuntu server.
 
 | Variable           | Type                     | Mandatory? | Default        | Description           |
 |--------------------|--------------------------|------------|----------------|-----------------------|
-| published_services | array of publish_service | no         | []             | The services to be published by avahi daemon |
+| avahi_published_services | array of publish_service | no         | []             | The services to be published by avahi daemon |
 
 ### Definition publish_service
 
@@ -66,7 +66,7 @@ Typical playbook:
     - hosts: servers
 
     - role: install-avahi
-      published_services:
+      avahi_published_services:
         - name: timemachine
           file: afpd
           services:

@@ -3,7 +3,7 @@
   set_fact:
     intended_service_paths: >
       {{
-      published_services
+      avahi_published_services
       | selectattr('name', 'defined')
       | map(attribute='file')
       | map('regex_replace', '^(.*)$', '/etc/avahi/services/\1.service')

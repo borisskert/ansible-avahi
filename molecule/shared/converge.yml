@@ -5,7 +5,7 @@
 
   roles:
     - role: ansible-avahi
-      published_services:
+      avahi_published_services:
         - file: timemachine
           name: '%h'
           services:

@@ -14,7 +14,7 @@
     owner: root
     group: root
     mode: '0644'
-  with_items: "{{ published_services }}"
+  with_items: "{{ avahi_published_services }}"
   notify: Reload avahi daemon
 
 - name: Enable avahi deamon
