@@ -5,27 +5,28 @@ dependency:
 driver:
   name: vagrant
   provider:
-    name: virtualbox
+    name: libvirt
 
 platforms:
-  - name: ansible-avahi-xenial
-    box: ubuntu/xenial64
-  - name: ansible-avahi-bionic
-    box: ubuntu/bionic64
+  - name: ansible-avahi-noble
+    box: cloud-image/ubuntu-24.04
+  - name: ansible-avahi-jammy
+    box: cloud-image/ubuntu-22.04
   - name: ansible-avahi-focal
-    box: ubuntu/focal64
-  - name: ansible-avahi-stretch
-    box: debian/stretch64
+    box: cloud-image/ubuntu-20.04
+  - name: ansible-avahi-bookworm
+    box: cloud-image/debian-12
     groups:
       - debian
-  - name: ansible-avahi-buster
-    box: debian/buster64
+  - name: ansible-avahi-bullseye
+    box: cloud-image/debian-11
     groups:
       - debian
 
 provisioner:
   name: ansible
   playbooks:
+    prepare: ../shared/prepare.yml
     converge: ../shared/converge.yml
   inventory:
     group_vars:
