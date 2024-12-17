@@ -4,9 +4,13 @@ Installs an avahi daemon on an ubuntu server.
 
 ## Tested operating systems
 
-* Ubuntu 16.04 (xenial)
-* Ubuntu 18.04 (bionic)
-* Ubuntu 20.04 (focal)
+* Ubuntu:
+    * 24.04 (noble)
+    * 22.04 (jammy)
+    * 20.04 (focal)
+* Debian
+    * 12 (bookworm)
+    * 11 (bullseye)
 
 ## System requirements
 
@@ -21,25 +25,25 @@ Installs an avahi daemon on an ubuntu server.
 
 ## Role parameters
 
-| Variable           | Type                     | Mandatory? | Default        | Description           |
-|--------------------|--------------------------|------------|----------------|-----------------------|
-| avahi_published_services | array of publish_service | no         | []             | The services to be published by avahi daemon |
+| Variable                 | Type                     | Mandatory? | Default | Description                                  |
+|--------------------------|--------------------------|------------|---------|----------------------------------------------|
+| avahi_published_services | array of publish_service | no         | []      | The services to be published by avahi daemon |
 
 ### Definition publish_service
 
-| Property      | Type             | Mandatory? | Description           |
-|---------------|------------------|------------|-----------------------|
-| name          | text             | yes        | The published name of the service |
-| file          | text             | yes        | The filename of the service in your config |
-| services      | array of service | yes        | The avahi services defined in service xml file |
+| Property | Type             | Mandatory? | Description                                    |
+|----------|------------------|------------|------------------------------------------------|
+| name     | text             | yes        | The published name of the service              |
+| file     | text             | yes        | The filename of the service in your config     |
+| services | array of service | yes        | The avahi services defined in service xml file |
 
 ### Definition service
 
-| Property      | Type             | Mandatory? | Description           |
-|---------------|------------------|------------|-----------------------|
-| type          | text             | yes        | The avahi type of the service. See [avahi service type database @ github](https://github.com/lathiat/avahi/blob/master/service-type-database/service-types) for further information |
-| port          | number (port)    | yes        | The port number of the service to be published |
-| txt_records   | array of texts   | no         | Avahi txt records to be published |
+| Property    | Type           | Mandatory? | Description                                                                                                                                                                         |
+|-------------|----------------|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| type        | text           | yes        | The avahi type of the service. See [avahi service type database @ github](https://github.com/lathiat/avahi/blob/master/service-type-database/service-types) for further information |
+| port        | number (port)  | yes        | The port number of the service to be published                                                                                                                                      |
+| txt_records | array of texts | no         | Avahi txt records to be published                                                                                                                                                   |
 
 ## Usage
 
@@ -84,6 +88,7 @@ Requirements:
 
 * [Vagrant](https://www.vagrantup.com/)
 * [VirtualBox](https://www.virtualbox.org/)
+* [libvirt](https://libvirt.org/)
 * [Ansible](https://docs.ansible.com/)
 * [Molecule](https://molecule.readthedocs.io/en/latest/index.html)
 * [yamllint](https://yamllint.readthedocs.io/en/stable/#)
@@ -103,8 +108,4 @@ molecule test
 ```
 
 I recommend to use [pyenv](https://github.com/pyenv/pyenv) for local testing.
-Within the Github Actions pipeline I use [my own molecule Docker image](https://github.com/borisskert/docker-molecule).
-
-## Links
-
-* [teamspeak @ Docker Hub](https://hub.docker.com/_/teamspeak/)
+Within the GitHub Actions pipeline I use [my own molecule action](https://github.com/borisskert/molecule-action).

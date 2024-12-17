@@ -4,6 +4,10 @@
     name: avahi-daemon
     state: started
   register: avahi_daemon_start
+  when: not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )
 
 - name: Reload avahi daemon
   service:
@@ -12,4 +16,8 @@
   when: not (
     avahi_daemon_start is defined
     and avahi_daemon_start.changed
+    )
+    and not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
     )

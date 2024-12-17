@@ -5,7 +5,7 @@
     state: present
     update_cache: true
 
-- include: delete-not-published-services.yml
+- include_tasks: delete-not-published-services.yml
 
 - name: Setup avahi services
   template:

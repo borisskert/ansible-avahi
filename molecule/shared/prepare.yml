@@ -10,6 +10,12 @@
         checksum_algorithm: sha256
       register: timemachine_service_file
 
+    - name: Create avahi services directory
+      ansible.builtin.file:
+        path: /etc/avahi/services
+        state: directory
+        mode: '0755'
+
     - name: Create dummy service file to be removed by role
       copy:
         dest: /etc/avahi/services/another.service
@@ -28,3 +34,11 @@
                   <txt-record>model=RackMac</txt-record>
               </service>
           </service-group>
+
+  post_tasks:
+    - name: Install netcat on Debian-based systems (to test open ports)
+      package:
+        name: netcat-traditional
+        state: present
+        update_cache: true
+      when: ansible_distribution == 'Debian'
